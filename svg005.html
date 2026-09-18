@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>svg图标</title>
+    <script src="https://at.alicdn.com/t/c/font_5231916_75qfwfkimjf.js"></script>
+    <link rel="stylesheet" href="./css/svg005.css">
+</head>
+<body>
+    <h3>svg图标</h3>
+    <!-- 修改错误1：补全div -->
+    <div class="tab-nav">
+        <div class="tab-item" onclick="changeTab(this)">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-kongbaiye"></use>
+            </svg>
+            <span>空白页</span>
+            <!-- 修改错误2 id去掉空格 -->
+            <div class="budge-dot" id="blank-page"></div>
+        </div>
+        <div class="tab-item" onclick="changeTab(this)">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-kongbaiye1"></use>
+            </svg>
+            <span>空白页</span>
+            <div class="budge-num"id='budge-plan'>6</div>
+        </div>
+        <div class="tab-item" onclick="changeTab(this)">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-kongbai"></use>
+            </svg>
+            <span>空白</span>
+              <div class="budge-border"id="white"></div>
+        </div>
+         <div class="tab-item" onclick="changeTab(this)">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-kongbai"></use>
+            </svg>
+            <span>空白</span>
+              <div class="budge-dot max"></div>
+        </div>
+    </div><!-- 闭合tab-nav，结构正确 -->
+    <script>
+        function changeTab(current) {
+            let tabs = document.querySelectorAll('.tab-item');
+            for(let i = 0; i < tabs.length; i++){
+                tabs[i].classList.remove('active');
+            }
+            current.classList.add('active');
+        }
+    </script>
+</body>
+</html>
