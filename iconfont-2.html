@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>拾形图谱 · 线为形 — Lucide 矢量图标</title>
+<style>
+  :root {
+    --szh_porcelain: #EDF1F5;
+    --szh_porcelain_deep: #E2E8EF;
+    --szh_ink: #1B2B3A;
+    --szh_ink_soft: #5A6B7C;
+    --szh_lapis: #2C5490;
+    --szh_gold: #8A6D2F;
+    --szh_gold_line: rgba(176, 141, 90, 0.45);
+    --szh_cinnabar: #A63B25;
+    --szh_rule: rgba(27, 43, 58, 0.16);
+    --szh_serif: "Noto Serif SC", "Source Han Serif SC", "STZhongsong", "SimSun", serif;
+    --szh_sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", sans-serif;
+    --szh_mono: "JetBrains Mono", "Cascadia Mono", Consolas, "Courier New", monospace;
+    --szh_pad: clamp(20px, 6vw, 72px);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--szh_porcelain);
+    color: var(--szh_ink);
+    font-family: var(--szh_sans);
+    font-size: 16px;
+    line-height: 1.75;
+  }
+
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible, input:focus-visible {
+    outline: 2px solid var(--szh_cinnabar);
+    outline-offset: 3px;
+  }
+
+  /* ---- 页眉：馆标 ---- */
+  .szh_top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px 28px;
+    padding: 18px var(--szh_pad);
+    border-bottom: 1px solid var(--szh_rule);
+  }
+  .szh_brand { display: flex; align-items: center; gap: 12px; }
+  .szh_seal {
+    display: grid;
+    place-items: center;
+    background: var(--szh_cinnabar);
+    color: #F6EFE4;
+    font-family: var(--szh_serif);
+    writing-mode: vertical-rl;
+    line-height: 1;
+    letter-spacing: 0.14em;
+    border-radius: 4px;
+    user-select: none;
+  }
+  .szh_seal_small { width: 34px; height: 34px; font-size: 12px; padding: 5px 0; }
+  .szh_seal_big { width: 58px; height: 58px; font-size: 20px; padding: 7px 0; }
+  .szh_brand_text { display: flex; flex-direction: column; }
+  .szh_brand_text strong {
+    font-family: var(--szh_serif);
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+  }
+  .szh_brand_text small {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--szh_gold);
+  }
+  .szh_nav { display: flex; gap: 26px; }
+  .szh_nav a {
+    font-family: var(--szh_serif);
+    font-size: 15px;
+    letter-spacing: 0.16em;
+    text-decoration: none;
+    color: var(--szh_ink_soft);
+    border-bottom: 2px solid transparent;
+    padding-bottom: 3px;
+  }
+  .szh_nav a:hover { color: var(--szh_lapis); }
+  .szh_nav a[aria-current="page"] {
+    color: var(--szh_ink);
+    border-bottom-color: var(--szh_cinnabar);
+  }
+
+  /* ---- 序厅 ---- */
+  .szh_hero {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1.2fr) minmax(0, 1fr);
+    gap: clamp(28px, 5vw, 72px);
+    align-items: center;
+    padding: clamp(36px, 6vw, 80px) var(--szh_pad);
+  }
+  .szh_hero_title_wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 22px;
+  }
+  .szh_hero_title {
+    margin: 0;
+    writing-mode: vertical-rl;
+    font-family: var(--szh_serif);
+    font-weight: 700;
+    font-size: clamp(2.2rem, 4.5vw, 3.3rem);
+    letter-spacing: 0.3em;
+    line-height: 1;
+  }
+  .szh_stage {
+    position: relative;
+    margin: 0;
+    min-height: 320px;
+    display: grid;
+    place-items: center;
+    padding: 30px 10px;
+  }
+  .szh_stage::before, .szh_stage::after {
+    content: "";
+    position: absolute;
+    background: var(--szh_gold_line);
+  }
+  .szh_stage::before { left: 0; right: 0; top: 50%; height: 1px; }
+  .szh_stage::after { top: 0; bottom: 0; left: 50%; width: 1px; }
+  .szh_hero_glyph { position: relative; color: var(--szh_lapis); }
+  .szh_stage_cap {
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    font-family: var(--szh_mono);
+    font-size: 11px;
+    color: var(--szh_ink_soft);
+    background: var(--szh_porcelain);
+    padding: 0 10px;
+  }
+  .szh_lede {
+    margin: 0 0 26px;
+    font-family: var(--szh_serif);
+    font-size: 17px;
+    max-width: 30em;
+  }
+  .szh_spec { margin: 0; }
+  .szh_spec_row {
+    display: flex;
+    gap: 18px;
+    padding: 9px 2px;
+    border-top: 1px solid var(--szh_gold_line);
+  }
+  .szh_spec_row:last-child { border-bottom: 1px solid var(--szh_gold_line); }
+  .szh_spec_row dt {
+    flex: 0 0 3.5em;
+    font-family: var(--szh_serif);
+    color: var(--szh_gold);
+    letter-spacing: 0.2em;
+  }
+  .szh_spec_row dd {
+    margin: 0;
+    font-family: var(--szh_mono);
+    font-size: 13px;
+    word-break: break-all;
+  }
+
+  /* ---- 陈列架 ---- */
+  .szh_group {
+    display: grid;
+    grid-template-columns: 58px minmax(0, 1fr);
+    gap: 20px;
+    padding: 34px var(--szh_pad);
+    border-top: 1px solid var(--szh_rule);
+  }
+  .szh_group_label {
+    margin: 0;
+    writing-mode: vertical-rl;
+    font-family: var(--szh_serif);
+    font-weight: 600;
+    font-size: 20px;
+    letter-spacing: 0.4em;
+    color: var(--szh_gold);
+    justify-self: center;
+  }
+  .szh_shelf {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(108px, 1fr));
+    column-gap: 22px;
+  }
+  .szh_tile {
+    border-top: 1px solid var(--szh_gold_line);
+    padding: 16px 4px 18px;
+    text-align: center;
+  }
+  .szh_tile svg {
+    width: 32px;
+    height: 32px;
+    color: var(--szh_ink);
+    transition: color 0.25s ease;
+  }
+  .szh_tile:hover svg { color: var(--szh_cinnabar); }
+  .szh_tile:hover { border-top-color: var(--szh_cinnabar); }
+  .szh_tile_cjk {
+    display: block;
+    margin-top: 10px;
+    font-family: var(--szh_serif);
+    font-size: 13px;
+    letter-spacing: 0.1em;
+  }
+  .szh_tile_meta {
+    display: block;
+    font-family: var(--szh_mono);
+    font-size: 10px;
+    color: var(--szh_ink_soft);
+    line-height: 1.6;
+    word-break: break-all;
+  }
+
+  /* ---- 原理 ---- */
+  .szh_method {
+    padding: 44px var(--szh_pad) 56px;
+    border-top: 1px solid var(--szh_rule);
+  }
+  .szh_method_title {
+    margin: 0 0 8px;
+    font-family: var(--szh_serif);
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+  }
+  .szh_method_intro {
+    margin: 0 0 28px;
+    color: var(--szh_ink_soft);
+    max-width: 40em;
+  }
+  .szh_steps { margin: 0; }
+  .szh_step {
+    display: grid;
+    grid-template-columns: 120px minmax(0, 1fr);
+    gap: 22px;
+    padding: 18px 2px;
+    border-top: 1px solid var(--szh_gold_line);
+  }
+  .szh_step dt {
+    font-family: var(--szh_serif);
+    color: var(--szh_cinnabar);
+    letter-spacing: 0.22em;
+    font-size: 15px;
+    padding-top: 2px;
+  }
+  .szh_step dd { margin: 0; max-width: 42em; }
+  .szh_step code {
+    font-family: var(--szh_mono);
+    font-size: 13px;
+    background: var(--szh_porcelain_deep);
+    padding: 1px 6px;
+    border-radius: 3px;
+  }
+  .szh_code {
+    margin: 26px 0 0;
+    border-left: 3px solid var(--szh_lapis);
+    background: var(--szh_porcelain_deep);
+    padding: 16px 20px;
+    overflow-x: auto;
+  }
+  .szh_code pre {
+    margin: 0;
+    font-family: var(--szh_mono);
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: var(--szh_ink);
+  }
+
+  /* ---- 调锋：交互示范 ---- */
+  .szh_tune_stage {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 34px;
+    align-items: center;
+    justify-content: center;
+    padding: 38px 12px;
+    border: 1px solid var(--szh_gold_line);
+    margin: 6px 0 22px;
+    color: var(--szh_ink);
+  }
+  .szh_tune_stage svg {
+    width: 54px;
+    height: 54px;
+    transition: stroke-width 0.15s ease, color 0.25s ease;
+  }
+  .szh_tune_controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 18px 34px;
+  }
+  .szh_tune_line {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: var(--szh_serif);
+    letter-spacing: 0.12em;
+  }
+  .szh_stroke_range { width: min(260px, 52vw); accent-color: var(--szh_lapis); }
+  .szh_stroke_value {
+    font-family: var(--szh_mono);
+    font-size: 14px;
+    min-width: 3.2em;
+    text-align: right;
+  }
+  .szh_swatches { display: flex; gap: 12px; align-items: center; }
+  .szh_swatch {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 2px solid var(--szh_porcelain);
+    box-shadow: 0 0 0 1px var(--szh_rule);
+    cursor: pointer;
+    padding: 0;
+  }
+  .szh_swatch:hover { box-shadow: 0 0 0 2px var(--szh_gold); }
+  .szh_swatch[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--szh_gold); }
+
+  /* ---- 页脚 ---- */
+  .szh_foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 12px 30px;
+    padding: 26px var(--szh_pad) 40px;
+    border-top: 1px solid var(--szh_rule);
+    color: var(--szh_ink_soft);
+    font-size: 13.5px;
+  }
+  .szh_foot a {
+    font-family: var(--szh_serif);
+    color: var(--szh_lapis);
+    letter-spacing: 0.1em;
+  }
+
+  /* ---- 入场：一次盖印 ---- */
+  @media (prefers-reduced-motion: no-preference) {
+    .szh_seal_big { animation: szh_stamp_in 0.7s cubic-bezier(0.2, 0.9, 0.3, 1.15) both; }
+    .szh_hero_glyph svg { animation: szh_glyph_in 0.9s ease 0.18s both; }
+  }
+  @keyframes szh_stamp_in {
+    from { transform: scale(1.7) rotate(-8deg); opacity: 0; }
+    to { transform: none; opacity: 1; }
+  }
+  @keyframes szh_glyph_in {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  /* ---- 窄屏 ---- */
+  @media (max-width: 880px) {
+    .szh_hero { grid-template-columns: 1fr; justify-items: center; text-align: left; }
+    .szh_hero_title_wrap { flex-direction: row; align-items: center; gap: 18px; }
+    .szh_hero_title { writing-mode: horizontal-tb; letter-spacing: 0.24em; }
+    .szh_stage { width: 100%; }
+    .szh_spec { width: 100%; }
+    .szh_group { grid-template-columns: 1fr; }
+    .szh_group_label { writing-mode: horizontal-tb; letter-spacing: 0.3em; justify-self: start; }
+    .szh_step { grid-template-columns: 1fr; gap: 6px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="szh_top">
+  <div class="szh_brand">
+    <span class="szh_seal szh_seal_small" aria-hidden="true">拾形</span>
+    <span class="szh_brand_text">
+      <strong>拾形图谱</strong>
+      <small>SHIXING SPECIMEN</small>
+    </span>
+  </div>
+  <nav class="szh_nav" aria-label="页面导航">
+    <a href="index.html">返回首页</a>
+    <a href="iconfont-1.html">字为形</a>
+    <a href="iconfont-2.html" aria-current="page">线为形</a>
+  </nav>
+</header>
+
+<main>
+  <section class="szh_hero">
+    <div class="szh_hero_title_wrap">
+      <h1 class="szh_hero_title">线为形</h1>
+      <span class="szh_seal szh_seal_big" aria-hidden="true">拾形</span>
+    </div>
+    <figure class="szh_stage">
+      <i class="szh_hero_glyph" data-lucide="pen-tool" stroke-width="1" aria-hidden="true"></i>
+      <figcaption class="szh_stage_cap">pen-tool 格 24×24 描边成线</figcaption>
+    </figure>
+    <div>
+      <p class="szh_lede">图形是一条线。Lucide 以路径数据为底，载入时把占位元素换成一枚枚内联 svg。线随描边粗细而肥瘦，随墨色而浓淡，此页陈列二十七枚，并设「调锋」一栏以试其性。</p>
+      <dl class="szh_spec">
+        <div class="szh_spec_row">
+          <dt>字库</dt>
+          <dd>Lucide v0.469.0</dd>
+        </div>
+        <div class="szh_spec_row">
+          <dt>法门</dt>
+          <dd>内联矢量 svg</dd>
+        </div>
+        <div class="szh_spec_row">
+          <dt>载体</dt>
+          <dd>cdn/lucide/lucide.min.js（1743 枚）</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="szh_group">
+    <h2 class="szh_group_label">取景</h2>
+    <ul class="szh_shelf">
+      <li class="szh_tile"><i data-lucide="camera" aria-hidden="true"></i><span class="szh_tile_cjk">相机</span><span class="szh_tile_meta">camera</span></li>
+      <li class="szh_tile"><i data-lucide="image" aria-hidden="true"></i><span class="szh_tile_cjk">画影</span><span class="szh_tile_meta">image</span></li>
+      <li class="szh_tile"><i data-lucide="film" aria-hidden="true"></i><span class="szh_tile_cjk">胶片</span><span class="szh_tile_meta">film</span></li>
+      <li class="szh_tile"><i data-lucide="video" aria-hidden="true"></i><span class="szh_tile_cjk">影像</span><span class="szh_tile_meta">video</span></li>
+      <li class="szh_tile"><i data-lucide="aperture" aria-hidden="true"></i><span class="szh_tile_cjk">光圈</span><span class="szh_tile_meta">aperture</span></li>
+      <li class="szh_tile"><i data-lucide="eye" aria-hidden="true"></i><span class="szh_tile_cjk">目</span><span class="szh_tile_meta">eye</span></li>
+      <li class="szh_tile"><i data-lucide="focus" aria-hidden="true"></i><span class="szh_tile_cjk">对焦</span><span class="szh_tile_meta">focus</span></li>
+    </ul>
+  </section>
+
+  <section class="szh_group">
+    <h2 class="szh_group_label">制图</h2>
+    <ul class="szh_shelf">
+      <li class="szh_tile"><i data-lucide="pen-tool" aria-hidden="true"></i><span class="szh_tile_cjk">钢笔</span><span class="szh_tile_meta">pen-tool</span></li>
+      <li class="szh_tile"><i data-lucide="ruler" aria-hidden="true"></i><span class="szh_tile_cjk">界尺</span><span class="szh_tile_meta">ruler</span></li>
+      <li class="szh_tile"><i data-lucide="pencil" aria-hidden="true"></i><span class="szh_tile_cjk">铅条</span><span class="szh_tile_meta">pencil</span></li>
+      <li class="szh_tile"><i data-lucide="scissors" aria-hidden="true"></i><span class="szh_tile_cjk">剪刀</span><span class="szh_tile_meta">scissors</span></li>
+      <li class="szh_tile"><i data-lucide="crop" aria-hidden="true"></i><span class="szh_tile_cjk">裁切</span><span class="szh_tile_meta">crop</span></li>
+      <li class="szh_tile"><i data-lucide="eraser" aria-hidden="true"></i><span class="szh_tile_cjk">擦净</span><span class="szh_tile_meta">eraser</span></li>
+      <li class="szh_tile"><i data-lucide="compass" aria-hidden="true"></i><span class="szh_tile_cjk">圆规</span><span class="szh_tile_meta">compass</span></li>
+    </ul>
+  </section>
+
+  <section class="szh_group">
+    <h2 class="szh_group_label">天时</h2>
+    <ul class="szh_shelf">
+      <li class="szh_tile"><i data-lucide="sun" aria-hidden="true"></i><span class="szh_tile_cjk">日</span><span class="szh_tile_meta">sun</span></li>
+      <li class="szh_tile"><i data-lucide="moon" aria-hidden="true"></i><span class="szh_tile_cjk">月</span><span class="szh_tile_meta">moon</span></li>
+      <li class="szh_tile"><i data-lucide="cloud-rain" aria-hidden="true"></i><span class="szh_tile_cjk">云雨</span><span class="szh_tile_meta">cloud-rain</span></li>
+      <li class="szh_tile"><i data-lucide="wind" aria-hidden="true"></i><span class="szh_tile_cjk">风</span><span class="szh_tile_meta">wind</span></li>
+      <li class="szh_tile"><i data-lucide="snowflake" aria-hidden="true"></i><span class="szh_tile_cjk">雪</span><span class="szh_tile_meta">snowflake</span></li>
+      <li class="szh_tile"><i data-lucide="sunrise" aria-hidden="true"></i><span class="szh_tile_cjk">破晓</span><span class="szh_tile_meta">sunrise</span></li>
+    </ul>
+  </section>
+
+  <section class="szh_group">
+    <h2 class="szh_group_label">指向</h2>
+    <ul class="szh_shelf">
+      <li class="szh_tile"><i data-lucide="arrow-up" aria-hidden="true"></i><span class="szh_tile_cjk">上指</span><span class="szh_tile_meta">arrow-up</span></li>
+      <li class="szh_tile"><i data-lucide="arrow-right" aria-hidden="true"></i><span class="szh_tile_cjk">右指</span><span class="szh_tile_meta">arrow-right</span></li>
+      <li class="szh_tile"><i data-lucide="arrow-down" aria-hidden="true"></i><span class="szh_tile_cjk">下指</span><span class="szh_tile_meta">arrow-down</span></li>
+      <li class="szh_tile"><i data-lucide="arrow-left" aria-hidden="true"></i><span class="szh_tile_cjk">左指</span><span class="szh_tile_meta">arrow-left</span></li>
+      <li class="szh_tile"><i data-lucide="navigation" aria-hidden="true"></i><span class="szh_tile_cjk">航向</span><span class="szh_tile_meta">navigation</span></li>
+      <li class="szh_tile"><i data-lucide="map-pin" aria-hidden="true"></i><span class="szh_tile_cjk">标的</span><span class="szh_tile_meta">map-pin</span></li>
+      <li class="szh_tile"><i data-lucide="locate" aria-hidden="true"></i><span class="szh_tile_cjk">定位</span><span class="szh_tile_meta">locate</span></li>
+    </ul>
+  </section>
+
+  <section class="szh_method">
+    <h2 class="szh_method_title">调锋</h2>
+    <p class="szh_method_intro">矢量之道，在锋之肥瘦。svg 之形不系于字体，描边粗细与墨色皆可应手而改。试拖动滑杆，或点选墨色。</p>
+    <div class="szh_tune_stage" id="szh_tune_stage">
+      <i data-lucide="house" aria-hidden="true"></i>
+      <i data-lucide="heart" aria-hidden="true"></i>
+      <i data-lucide="star" aria-hidden="true"></i>
+      <i data-lucide="settings" aria-hidden="true"></i>
+      <i data-lucide="bell" aria-hidden="true"></i>
+      <i data-lucide="feather" aria-hidden="true"></i>
+    </div>
+    <div class="szh_tune_controls">
+      <label class="szh_tune_line">
+        锋
+        <input class="szh_stroke_range" id="szh_stroke_range" type="range" min="0.75" max="3" step="0.25" value="2">
+        <output class="szh_stroke_value" id="szh_stroke_value" for="szh_stroke_range">2</output>
+      </label>
+      <div class="szh_swatches" role="group" aria-label="墨色">
+        <button class="szh_swatch" type="button" data-szh-color="#1B2B3A" style="background:#1B2B3A" aria-label="墨青"></button>
+        <button class="szh_swatch" type="button" data-szh-color="#2C5490" style="background:#2C5490" aria-label="群青"></button>
+        <button class="szh_swatch" type="button" data-szh-color="#A63B25" style="background:#A63B25" aria-label="朱砂"></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="szh_method">
+    <h2 class="szh_method_title">矢量如何成形</h2>
+    <p class="szh_method_intro">一枚 svg 图标，自路径数据到页上之线，亦经三步。</p>
+    <dl class="szh_steps">
+      <div class="szh_step">
+        <dt>其一 载体</dt>
+        <dd>路径数据随 lucide.min.js 而来。本页脚本取自本地 cdn/lucide 目录，其中藏一千七百四十三枚图形，皆以 24×24 之格绘制。</dd>
+      </div>
+      <div class="szh_step">
+        <dt>其二 映射</dt>
+        <dd>元素只需写下 <code>&lt;i data-lucide="camera"&gt;&lt;/i&gt;</code>，脚本于文档载入时将其替换为一枚内联 svg，类名与属性原样随行。</dd>
+      </div>
+      <div class="szh_step">
+        <dt>其三 呈现</dt>
+        <dd>svg 是真正的矢量：描边随 stroke-width，墨色随 currentColor，尺寸随宽高而不失其锐。上节「调锋」即是明证。</dd>
+      </div>
+    </dl>
+    <div class="szh_code">
+      <pre>&lt;!-- 心意 heart，路径数据原文照录 --&gt;
+&lt;svg viewBox="0 0 24 24" fill="none"
+     stroke="currentColor" stroke-width="2"
+     stroke-linecap="round" stroke-linejoin="round"&gt;
+  &lt;path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0
+       16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5
+       5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"&gt;&lt;/path&gt;
+&lt;/svg&gt;</pre>
+    </div>
+  </section>
+</main>
+
+<footer class="szh_foot">
+  <p>拾形图谱，高级网页设计课程习作。矢量之法见本页，字体图标之法见 <a href="iconfont-1.html">字为形</a>。</p>
+  <a class="szh_foot_home" href="index.html">返回首页</a>
+</footer>
+
+<script src="cdn/lucide/lucide.min.js"></script>
+<script>
+  lucide.createIcons();
+
+  var szh_range = document.getElementById('szh_stroke_range');
+  var szh_stage = document.getElementById('szh_tune_stage');
+  var szh_value = document.getElementById('szh_stroke_value');
+
+  function szh_apply_stroke() {
+    var szh_svgs = szh_stage.querySelectorAll('svg');
+    for (var szh_i = 0; szh_i < szh_svgs.length; szh_i++) {
+      szh_svgs[szh_i].setAttribute('stroke-width', szh_range.value);
+    }
+    szh_value.textContent = szh_range.value;
+  }
+  szh_range.addEventListener('input', szh_apply_stroke);
+
+  var szh_swatches = document.querySelectorAll('.szh_swatch');
+  function szh_mark_pressed(szh_btn) {
+    for (var szh_j = 0; szh_j < szh_swatches.length; szh_j++) {
+      szh_swatches[szh_j].setAttribute('aria-pressed', 'false');
+    }
+    szh_btn.setAttribute('aria-pressed', 'true');
+  }
+  for (var szh_j = 0; szh_j < szh_swatches.length; szh_j++) {
+    szh_swatches[szh_j].setAttribute('aria-pressed', 'false');
+    szh_swatches[szh_j].addEventListener('click', function (szh_event) {
+      szh_stage.style.color = szh_event.currentTarget.getAttribute('data-szh-color');
+      szh_mark_pressed(szh_event.currentTarget);
+    });
+  }
+</script>
+
+</body>
+</html>

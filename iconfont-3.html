@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>拾形图谱 · 移动手帖 — 字体图标底栏</title>
+<link rel="stylesheet" href="cdn/iconfont/iconfont.css">
+<link rel="stylesheet" href="cdn/fontawesome/css/all.min.css">
+<style>
+  :root {
+    --szh_porcelain: #EDF1F5;
+    --szh_porcelain_deep: #E2E8EF;
+    --szh_ink: #1B2B3A;
+    --szh_ink_soft: #5A6B7C;
+    --szh_lapis: #2C5490;
+    --szh_gold: #8A6D2F;
+    --szh_gold_line: rgba(176, 141, 90, 0.45);
+    --szh_cinnabar: #A63B25;
+    --szh_rule: rgba(27, 43, 58, 0.16);
+    --szh_serif: "Noto Serif SC", "Source Han Serif SC", "STZhongsong", "SimSun", serif;
+    --szh_sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", sans-serif;
+    --szh_mono: "JetBrains Mono", "Cascadia Mono", Consolas, "Courier New", monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: #D9E0E8;
+    color: var(--szh_ink);
+    font-family: var(--szh_sans);
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--szh_cinnabar);
+    outline-offset: 3px;
+  }
+
+  /* ---- 移动画框：窄屏全宽，宽屏居中 ---- */
+  .szh_app {
+    max-width: 430px;
+    margin: 0 auto;
+    min-height: 100dvh;
+    background: var(--szh_porcelain);
+    box-shadow: 0 0 0 1px var(--szh_rule);
+    position: relative;
+  }
+
+  /* ---- 页眉 ---- */
+  .szh_head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--szh_rule);
+  }
+  .szh_brand { display: flex; align-items: center; gap: 10px; }
+  .szh_seal {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    background: var(--szh_cinnabar);
+    color: #F6EFE4;
+    font-family: var(--szh_serif);
+    writing-mode: vertical-rl;
+    font-size: 11px;
+    line-height: 1;
+    letter-spacing: 0.12em;
+    border-radius: 4px;
+    user-select: none;
+  }
+  .szh_brand_name {
+    font-family: var(--szh_serif);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+  }
+  .szh_home {
+    font-size: 12.5px;
+    color: var(--szh_lapis);
+    text-decoration: none;
+    border-bottom: 1px solid var(--szh_gold_line);
+    padding-bottom: 2px;
+  }
+
+  /* ---- 正文 ---- */
+  .szh_body { padding: 20px 18px calc(84px + env(safe-area-inset-bottom)); }
+  .szh_lede {
+    margin: 0 0 20px;
+    font-family: var(--szh_serif);
+    font-size: 15.5px;
+  }
+  .szh_glyph_list { margin: 0 0 26px; }
+  .szh_glyph_row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 13px 2px;
+    border-top: 1px solid var(--szh_gold_line);
+  }
+  .szh_glyph_row:last-child { border-bottom: 1px solid var(--szh_gold_line); }
+  .szh_glyph_big {
+    flex: 0 0 46px;
+    text-align: center;
+    font-size: 30px;
+    line-height: 1;
+    color: var(--szh_lapis);
+  }
+  .szh_glyph_text { min-width: 0; }
+  .szh_glyph_cjk {
+    display: block;
+    font-family: var(--szh_serif);
+    font-size: 14.5px;
+    letter-spacing: 0.1em;
+  }
+  .szh_glyph_meta {
+    display: block;
+    font-family: var(--szh_mono);
+    font-size: 11px;
+    color: var(--szh_ink_soft);
+    word-break: break-all;
+  }
+  .szh_code {
+    border-left: 3px solid var(--szh_lapis);
+    background: var(--szh_porcelain_deep);
+    padding: 13px 15px;
+    overflow-x: auto;
+    margin: 0 0 26px;
+  }
+  .szh_code pre {
+    margin: 0;
+    font-family: var(--szh_mono);
+    font-size: 12px;
+    line-height: 1.7;
+  }
+  .szh_note {
+    margin: 0 0 26px;
+    font-size: 13px;
+    color: var(--szh_ink_soft);
+  }
+  .szh_note a { color: var(--szh_lapis); }
+
+  /* ---- 底部导航：固定 + 四项自适应等宽 ---- */
+  .szh_tabbar {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 430px;
+    display: flex;
+    background: #FAFBFD;
+    border-top: 1px solid var(--szh_rule);
+    padding-bottom: env(safe-area-inset-bottom);
+    z-index: 10;
+  }
+  .szh_tab {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 9px 0 7px;
+    text-decoration: none;
+    color: var(--szh_ink_soft);
+    position: relative;
+    transition: color 0.2s ease;
+  }
+  .szh_tab_icon {
+    position: relative;
+    display: grid;
+    place-items: center;
+    height: 26px;
+  }
+  .szh_tab_icon .iconfont { font-size: 24px; line-height: 1; }
+  .szh_tab_icon .fa-solid { font-size: 22px; line-height: 1; }
+  .szh_tab_label {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    line-height: 1.2;
+  }
+  .szh_tab.szh_active { color: var(--szh_lapis); }
+  .szh_tab.szh_active::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 22px;
+    height: 3px;
+    background: var(--szh_cinnabar);
+    border-radius: 0 0 3px 3px;
+  }
+
+  /* ---- 徽章与红点 ---- */
+  .szh_badge_num {
+    position: absolute;
+    top: -7px;
+    right: -12px;
+    min-width: 17px;
+    height: 17px;
+    padding: 0 4px;
+    border-radius: 9px;
+    background: var(--szh_cinnabar);
+    color: #F6EFE4;
+    font-size: 10.5px;
+    line-height: 17px;
+    text-align: center;
+    font-family: var(--szh_sans);
+  }
+  .szh_badge_dot {
+    position: absolute;
+    top: -3px;
+    right: -6px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--szh_cinnabar);
+  }
+</style>
+</head>
+<body>
+
+<div class="szh_app">
+
+  <header class="szh_head">
+    <div class="szh_brand">
+      <span class="szh_seal" aria-hidden="true">拾形</span>
+      <span class="szh_brand_name">拾形手帖</span>
+    </div>
+    <a class="szh_home" href="index.html">返回首页</a>
+  </header>
+
+  <main class="szh_body">
+    <p class="szh_lede">移动一帖。底部四栏，栏栏等宽而伸，随屏而缩；徽章悬于图标右上，数字记事，红点示意。此页以字体图标之法成其形。</p>
+
+    <div class="szh_glyph_list">
+      <div class="szh_glyph_row">
+        <span class="szh_glyph_big"><i class="iconfont icon-zhifeiji" aria-hidden="true"></i></span>
+        <span class="szh_glyph_text">
+          <span class="szh_glyph_cjk">纸飞机</span>
+          <span class="szh_glyph_meta">icon-zhifeiji 码位 e795</span>
+        </span>
+      </div>
+      <div class="szh_glyph_row">
+        <span class="szh_glyph_big"><i class="iconfont icon-xigua" aria-hidden="true"></i></span>
+        <span class="szh_glyph_text">
+          <span class="szh_glyph_cjk">西瓜</span>
+          <span class="szh_glyph_meta">icon-xigua 码位 e796</span>
+        </span>
+      </div>
+      <div class="szh_glyph_row">
+        <span class="szh_glyph_big"><i class="iconfont icon-pisa" aria-hidden="true"></i></span>
+        <span class="szh_glyph_text">
+          <span class="szh_glyph_cjk">比萨</span>
+          <span class="szh_glyph_meta">icon-pisa 码位 e797</span>
+        </span>
+      </div>
+    </div>
+
+    <div class="szh_code">
+      <pre>&lt;!-- 字体图标：一类别名，取码位成图 --&gt;
+&lt;i class="iconfont icon-zhifeiji"&gt;&lt;/i&gt;
+&lt;i class="fa-solid fa-user"&gt;&lt;/i&gt;</pre>
+    </div>
+
+    <p class="szh_note">font 目录中的 iconfont 字库（项目 5231916）供三枚图形；第四栏「我的」取 Font Awesome 字体之 user，同为字体法门。矢量之法另见 <a href="iconfont-4.html">线为形手帖</a>。</p>
+  </main>
+
+  <nav class="szh_tabbar" aria-label="底部导航">
+    <a class="szh_tab szh_active" href="#" aria-current="page">
+      <span class="szh_tab_icon">
+        <i class="iconfont icon-zhifeiji" aria-hidden="true"></i>
+        <span class="szh_badge_num">6</span>
+      </span>
+      <span class="szh_tab_label">发现</span>
+    </a>
+    <a class="szh_tab" href="#">
+      <span class="szh_tab_icon">
+        <i class="iconfont icon-xigua" aria-hidden="true"></i>
+      </span>
+      <span class="szh_tab_label">视频</span>
+    </a>
+    <a class="szh_tab" href="#">
+      <span class="szh_tab_icon">
+        <i class="iconfont icon-pisa" aria-hidden="true"></i>
+      </span>
+      <span class="szh_tab_label">美食</span>
+    </a>
+    <a class="szh_tab" href="#">
+      <span class="szh_tab_icon">
+        <i class="fa-solid fa-user" aria-hidden="true"></i>
+        <span class="szh_badge_dot"></span>
+      </span>
+      <span class="szh_tab_label">我的</span>
+    </a>
+  </nav>
+
+</div>
+
+<script>
+  var szh_tabs = document.querySelectorAll('.szh_tab');
+  for (var szh_i = 0; szh_i < szh_tabs.length; szh_i++) {
+    szh_tabs[szh_i].addEventListener('click', function (szh_event) {
+      szh_event.preventDefault();
+      for (var szh_j = 0; szh_j < szh_tabs.length; szh_j++) {
+        szh_tabs[szh_j].classList.remove('szh_active');
+        szh_tabs[szh_j].removeAttribute('aria-current');
+      }
+      szh_event.currentTarget.classList.add('szh_active');
+      szh_event.currentTarget.setAttribute('aria-current', 'page');
+    });
+  }
+</script>
+
+</body>
+</html>

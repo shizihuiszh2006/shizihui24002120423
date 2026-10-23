@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>拾形图谱 · 字为形 — Font Awesome 字体图标</title>
+<link rel="stylesheet" href="cdn/fontawesome/css/all.min.css">
+<style>
+  :root {
+    --szh_porcelain: #EDF1F5;
+    --szh_porcelain_deep: #E2E8EF;
+    --szh_ink: #1B2B3A;
+    --szh_ink_soft: #5A6B7C;
+    --szh_lapis: #2C5490;
+    --szh_gold: #8A6D2F;
+    --szh_gold_line: rgba(176, 141, 90, 0.45);
+    --szh_cinnabar: #A63B25;
+    --szh_rule: rgba(27, 43, 58, 0.16);
+    --szh_serif: "Noto Serif SC", "Source Han Serif SC", "STZhongsong", "SimSun", serif;
+    --szh_sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", sans-serif;
+    --szh_mono: "JetBrains Mono", "Cascadia Mono", Consolas, "Courier New", monospace;
+    --szh_pad: clamp(20px, 6vw, 72px);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--szh_porcelain);
+    color: var(--szh_ink);
+    font-family: var(--szh_sans);
+    font-size: 16px;
+    line-height: 1.75;
+  }
+
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible, input:focus-visible {
+    outline: 2px solid var(--szh_cinnabar);
+    outline-offset: 3px;
+  }
+
+  /* ---- 页眉：馆标 ---- */
+  .szh_top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px 28px;
+    padding: 18px var(--szh_pad);
+    border-bottom: 1px solid var(--szh_rule);
+  }
+  .szh_brand { display: flex; align-items: center; gap: 12px; }
+  .szh_seal {
+    display: grid;
+    place-items: center;
+    background: var(--szh_cinnabar);
+    color: #F6EFE4;
+    font-family: var(--szh_serif);
+    writing-mode: vertical-rl;
+    line-height: 1;
+    letter-spacing: 0.14em;
+    border-radius: 4px;
+    user-select: none;
+  }
+  .szh_seal_small { width: 34px; height: 34px; font-size: 12px; padding: 5px 0; }
+  .szh_seal_big { width: 58px; height: 58px; font-size: 20px; padding: 7px 0; }
+  .szh_brand_text { display: flex; flex-direction: column; }
+  .szh_brand_text strong {
+    font-family: var(--szh_serif);
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+  }
+  .szh_brand_text small {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--szh_gold);
+  }
+  .szh_nav { display: flex; gap: 26px; }
+  .szh_nav a {
+    font-family: var(--szh_serif);
+    font-size: 15px;
+    letter-spacing: 0.16em;
+    text-decoration: none;
+    color: var(--szh_ink_soft);
+    border-bottom: 2px solid transparent;
+    padding-bottom: 3px;
+  }
+  .szh_nav a:hover { color: var(--szh_lapis); }
+  .szh_nav a[aria-current="page"] {
+    color: var(--szh_ink);
+    border-bottom-color: var(--szh_cinnabar);
+  }
+
+  /* ---- 序厅：竖排题签 + 印章 + 标本 ---- */
+  .szh_hero {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1.2fr) minmax(0, 1fr);
+    gap: clamp(28px, 5vw, 72px);
+    align-items: center;
+    padding: clamp(36px, 6vw, 80px) var(--szh_pad);
+  }
+  .szh_hero_title_wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 22px;
+  }
+  .szh_hero_title {
+    margin: 0;
+    writing-mode: vertical-rl;
+    font-family: var(--szh_serif);
+    font-weight: 700;
+    font-size: clamp(2.2rem, 4.5vw, 3.3rem);
+    letter-spacing: 0.3em;
+    line-height: 1;
+  }
+  .szh_stage {
+    position: relative;
+    margin: 0;
+    min-height: 320px;
+    display: grid;
+    place-items: center;
+    padding: 30px 10px;
+  }
+  .szh_stage::before, .szh_stage::after {
+    content: "";
+    position: absolute;
+    background: var(--szh_gold_line);
+  }
+  .szh_stage::before { left: 0; right: 0; top: 50%; height: 1px; }
+  .szh_stage::after { top: 0; bottom: 0; left: 50%; width: 1px; }
+  .szh_hero_glyph {
+    position: relative;
+    color: var(--szh_lapis);
+    font-size: clamp(8rem, 18vw, 12rem);
+    line-height: 1;
+  }
+  .szh_stage_cap {
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    font-family: var(--szh_mono);
+    font-size: 11px;
+    color: var(--szh_ink_soft);
+    background: var(--szh_porcelain);
+    padding: 0 10px;
+  }
+  .szh_lede {
+    margin: 0 0 26px;
+    font-family: var(--szh_serif);
+    font-size: 17px;
+    max-width: 30em;
+  }
+  .szh_spec { margin: 0; }
+  .szh_spec_row {
+    display: flex;
+    gap: 18px;
+    padding: 9px 2px;
+    border-top: 1px solid var(--szh_gold_line);
+  }
+  .szh_spec_row:last-child { border-bottom: 1px solid var(--szh_gold_line); }
+  .szh_spec_row dt {
+    flex: 0 0 3.5em;
+    font-family: var(--szh_serif);
+    color: var(--szh_gold);
+    letter-spacing: 0.2em;
+  }
+  .szh_spec_row dd {
+    margin: 0;
+    font-family: var(--szh_mono);
+    font-size: 13px;
+    word-break: break-all;
+  }
+
+  /* ---- 陈列架：竖排类别签 + 图标格 ---- */
+  .szh_group {
+    display: grid;
+    grid-template-columns: 58px minmax(0, 1fr);
+    gap: 20px;
+    padding: 34px var(--szh_pad);
+    border-top: 1px solid var(--szh_rule);
+  }
+  .szh_group_label {
+    margin: 0;
+    writing-mode: vertical-rl;
+    font-family: var(--szh_serif);
+    font-weight: 600;
+    font-size: 20px;
+    letter-spacing: 0.4em;
+    color: var(--szh_gold);
+    justify-self: center;
+  }
+  .szh_shelf {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(108px, 1fr));
+    column-gap: 22px;
+  }
+  .szh_tile {
+    border-top: 1px solid var(--szh_gold_line);
+    padding: 16px 4px 18px;
+    text-align: center;
+  }
+  .szh_tile i {
+    display: inline-block;
+    font-size: 30px;
+    line-height: 1;
+    color: var(--szh_ink);
+    transition: color 0.25s ease;
+  }
+  .szh_tile:hover i { color: var(--szh_cinnabar); }
+  .szh_tile:hover { border-top-color: var(--szh_cinnabar); }
+  .szh_tile_cjk {
+    display: block;
+    margin-top: 10px;
+    font-family: var(--szh_serif);
+    font-size: 13px;
+    letter-spacing: 0.1em;
+  }
+  .szh_tile_name, .szh_tile_code {
+    display: block;
+    font-family: var(--szh_mono);
+    font-size: 10px;
+    color: var(--szh_ink_soft);
+    line-height: 1.6;
+    word-break: break-all;
+  }
+
+  /* ---- 原理 ---- */
+  .szh_method {
+    padding: 44px var(--szh_pad) 56px;
+    border-top: 1px solid var(--szh_rule);
+  }
+  .szh_method_title {
+    margin: 0 0 8px;
+    font-family: var(--szh_serif);
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+  }
+  .szh_method_intro {
+    margin: 0 0 28px;
+    color: var(--szh_ink_soft);
+    max-width: 40em;
+  }
+  .szh_steps { margin: 0; display: grid; gap: 0; }
+  .szh_step {
+    display: grid;
+    grid-template-columns: 120px minmax(0, 1fr);
+    gap: 22px;
+    padding: 18px 2px;
+    border-top: 1px solid var(--szh_gold_line);
+  }
+  .szh_step dt {
+    font-family: var(--szh_serif);
+    color: var(--szh_cinnabar);
+    letter-spacing: 0.22em;
+    font-size: 15px;
+    padding-top: 2px;
+  }
+  .szh_step dd { margin: 0; max-width: 42em; }
+  .szh_step code {
+    font-family: var(--szh_mono);
+    font-size: 13px;
+    background: var(--szh_porcelain_deep);
+    padding: 1px 6px;
+    border-radius: 3px;
+  }
+  .szh_code {
+    margin: 26px 0 0;
+    border-left: 3px solid var(--szh_lapis);
+    background: var(--szh_porcelain_deep);
+    padding: 16px 20px;
+    overflow-x: auto;
+  }
+  .szh_code pre {
+    margin: 0;
+    font-family: var(--szh_mono);
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: var(--szh_ink);
+  }
+
+  /* ---- 页脚 ---- */
+  .szh_foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 12px 30px;
+    padding: 26px var(--szh_pad) 40px;
+    border-top: 1px solid var(--szh_rule);
+    color: var(--szh_ink_soft);
+    font-size: 13.5px;
+  }
+  .szh_foot a {
+    font-family: var(--szh_serif);
+    color: var(--szh_lapis);
+    letter-spacing: 0.1em;
+  }
+
+  /* ---- 入场：一次盖印 ---- */
+  @media (prefers-reduced-motion: no-preference) {
+    .szh_seal_big { animation: szh_stamp_in 0.7s cubic-bezier(0.2, 0.9, 0.3, 1.15) both; }
+    .szh_hero_glyph { animation: szh_glyph_in 0.9s ease 0.18s both; }
+  }
+  @keyframes szh_stamp_in {
+    from { transform: scale(1.7) rotate(-8deg); opacity: 0; }
+    to { transform: none; opacity: 1; }
+  }
+  @keyframes szh_glyph_in {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  /* ---- 窄屏 ---- */
+  @media (max-width: 880px) {
+    .szh_hero { grid-template-columns: 1fr; justify-items: center; text-align: left; }
+    .szh_hero_title_wrap { flex-direction: row; align-items: center; gap: 18px; }
+    .szh_hero_title { writing-mode: horizontal-tb; letter-spacing: 0.24em; }
+    .szh_stage { width: 100%; }
+    .szh_spec { width: 100%; }
+    .szh_group { grid-template-columns: 1fr; }
+    .szh_group_label { writing-mode: horizontal-tb; letter-spacing: 0.3em; justify-self: start; }
+    .szh_step { grid-template-columns: 1fr; gap: 6px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="szh_top">
+  <div class="szh_brand">
+    <span class="szh_seal szh_seal_small" aria-hidden="true">拾形</span>
+    <span class="szh_brand_text">
+      <strong>拾形图谱</strong>
+      <small>SHIXING SPECIMEN</small>
+    </span>
+  </div>
+  <nav class="szh_nav" aria-label="页面导航">
+    <a href="index.html">返回首页</a>
+    <a href="iconfont-1.html" aria-current="page">字为形</a>
+    <a href="iconfont-2.html">线为形</a>
+  </nav>
+</header>
+
+<main>
+  <section class="szh_hero">
+    <div class="szh_hero_title_wrap">
+      <h1 class="szh_hero_title">字为形</h1>
+      <span class="szh_seal szh_seal_big" aria-hidden="true">拾形</span>
+    </div>
+    <figure class="szh_stage">
+      <i class="szh_hero_glyph fa-solid fa-pen-nib" aria-hidden="true"></i>
+      <figcaption class="szh_stage_cap">fa-pen-nib 码位 f5ad 以字号成形</figcaption>
+    </figure>
+    <div>
+      <p class="szh_lede">图形先是一枚字。Font Awesome 把常用图形铸进字体文件，随 @font-face 而来，随 font-size 而生长，随 color 而改墨。此页陈列四十枚，注其名与码位，如馆中挂签。</p>
+      <dl class="szh_spec">
+        <div class="szh_spec_row">
+          <dt>字库</dt>
+          <dd>Font Awesome 6 Free 6.7.2</dd>
+        </div>
+        <div class="szh_spec_row">
+          <dt>法门</dt>
+          <dd>字体图标 webfont</dd>
+        </div>
+        <div class="szh_spec_row">
+          <dt>载体</dt>
+          <dd>cdn/fontawesome/webfonts/fa-solid-900.woff2</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="szh_group">
+    <h2 class="szh_group_label">界面</h2>
+    <ul class="szh_shelf">
+      <li class="szh_tile"><i class="fa-solid fa-house" aria-hidden="true"></i><span class="szh_tile_cjk">居所</span><span class="szh_tile_name">fa-house</span><span class="szh_tile_code">f015</span></li>
+      <li class="szh_tile"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><span class="szh_tile_cjk">寻索</span><span class="szh_tile_name">fa-magnifying-glass</span><span class="szh_tile_code">f002</span></li>
+      <li class="szh_tile"><i class="fa-solid fa-gear" aria-hidden="true"></i><span class="szh_tile_cjk">机枢</span><span class="szh_tile_name">fa-gear</span><span class="szh_tile_code">f013</span></li>
+      <li class="szh_tile"><i class="fa-solid fa-user" aria-hidden="true"></i><span class="szh_tile_cjk">人像</span><span class="szh_tile_name">fa-user</span><span class="szh_tile_code">f007</span></li>
+      <li class="szh_tile"><i class="fa-solid fa-bell" aria-hidden="true"></i><span class="szh_tile_cjk">钟铃</span><span class="szh_tile_name">fa-bell</span><span class="szh_tile_code">f0f3</span></li>
+      <li class="szh_tile"><i class="fa-solid fa-envelope" aria-hidden="true"></i><span class="szh_tile_cjk">信函</span><span class="szh_tile_name">fa-envelope</span><span class="szh_tile_code">f0e0</span></li>
+      <li class="szh_tile"><i class="fa-solid fa-heart" aria-hidden="true"></i><span class="szh_tile_cjk">心意</span><span class="szh_tile_name">fa-heart</span><span class="szh_tile_code">f004</span></li>
+      <li class="szh_tile"><i class="fa-solid fa-star" aria-hidden="true"></i><span class="szh_tile_cjk">星芒</span><span class="szh_tile_name">fa-star</span><span class="szh_tile_code">f005</span></li>
+      <li class="szh_tile"><i class="fa-solid fa-bookmark" aria-hidden="true"></i><span class="szh_tile_cjk">书签</span><span class="szh_tile_name">fa-bookmark</span><span class="szh_tile_code">f02e</span></li>
+      <li class="szh_tile"><i class="fa-solid fa-trash-can" aria-hidden="true"></i><span class="szh_tile_cjk">弃物</span><span class="szh_tile_name">fa-trash-can</span><span class="szh_tile_code">f2ed</span></li>
+    </ul>
+  </section>
+
+  <section class="szh_group">
+    <h2 class="szh_group_label">山川草木</h2>
+    <ul class="szh_shelf">
+      <li class="szh_tile"><i class="fa-solid fa-leaf" aria-hidden="true"></i><span class="szh_tile_cjk">叶</span><span class="szh_tile_name">fa-leaf</span><span class="szh_tile_code">f06c</span></li>
+      <li class="szh_tile"><i class="fa-solid fa-tree" aria-hidden="true"></i><span class="szh_tile_cjk">乔木</span><span class="szh_tile_name">fa-tree</span><span class="szh_tile_code">f1bb</span></li>
+      <li class="szh_tile"><i class="fa-solid fa-seedling" aria-hidden="true"></i><span class="szh_tile_cjk">新苗</span><span class="szh_tile_name">fa-seedling</span><span class="szh_tile_code">f4d8</span></li>
+      <li class="szh_tile"><i class="fa-solid fa-sun" aria-hidden="true"></i><span class="szh_tile_cjk">朝阳</span><span class="szh_tile_name">fa-sun</span><span class="szh_tile_code">f185</span></li>
+      <li class="szh_tile"><i class="fa-solid fa-moon" aria-hidden="true"></i><span class="szh_tile_cjk">弦月</span><span class="szh_tile_name">fa-moon</span><span class="szh_tile_code">f186</span></li>
+      <li class="szh_tile"><i class="fa-solid fa-cloud" aria-hidden="true"></i><span class="szh_tile_cjk">云</span><span class="szh_tile_name">fa-cloud</span><span class="szh_tile_code">f0c2</span></li>
+      <li class="szh_tile"><i class="fa-solid fa-fire" aria-hidden="true"></i><span class="szh_tile_cjk">焰</span><span class="szh_tile_name">fa-fire</span><span class="szh_tile_code">f06d</span></li>
+      <li class="szh_tile"><i class="fa-solid fa-snowflake" aria-hidden="true"></i><span class="szh_tile_cjk">雪花</span><span class="szh_tile_name">fa-snowflake</span><span class="szh_tile_code">f2dc</span></li>
+      <li class="szh_tile"><i class="fa-solid fa-mountain" aria-hidden="true"></i><span class="szh_tile_cjk">山岳</span><span class="szh_tile_name">fa-mountain</span><span class="szh_tile_code">f6fc</span></li>
+      <li class="szh_tile"><i class="fa-solid fa-wind" aria-hidden="true"></i><span class="szh_tile_cjk">风</span><span class="szh_tile_name">fa-wind</span><span class="szh_tile_code">f72e</span></li>
+    </ul>
+  </section>
+
+  <section class="szh_group">
+    <h2 class="szh_group_label">艺文之事</h2>
+    <ul class="szh_shelf">
+      <li class="szh_tile"><i class="fa-solid fa-palette" aria-hidden="true"></i><span class="szh_tile_cjk">调色</span><span class="szh_tile_name">fa-palette</span><span class="szh_tile_code">f53f</span></li>
+      <li class="szh_tile"><i class="fa-solid fa-paintbrush" aria-hidden="true"></i><span class="szh_tile_cjk">笔刷</span><span class="szh_tile_name">fa-paintbrush</span><span class="szh_tile_code">f1fc</span></li>
+      <li class="szh_tile"><i class="fa-solid fa-pen-fancy" aria-hidden="true"></i><span class="szh_tile_cjk">华笔</span><span class="szh_tile_name">fa-pen-fancy</span><span class="szh_tile_code">f5ac</span></li>
+      <li class="szh_tile"><i class="fa-solid fa-pen-nib" aria-hidden="true"></i><span class="szh_tile_cjk">笔尖</span><span class="szh_tile_name">fa-pen-nib</span><span class="szh_tile_code">f5ad</span></li>
+      <li class="szh_tile"><i class="fa-solid fa-feather" aria-hidden="true"></i><span class="szh_tile_cjk">羽笔</span><span class="szh_tile_name">fa-feather</span><span class="szh_tile_code">f52d</span></li>
+      <li class="szh_tile"><i class="fa-solid fa-music" aria-hidden="true"></i><span class="szh_tile_cjk">乐章</span><span class="szh_tile_name">fa-music</span><span class="szh_tile_code">f001</span></li>
+      <li class="szh_tile"><i class="fa-solid fa-camera" aria-hidden="true"></i><span class="szh_tile_cjk">摄影</span><span class="szh_tile_name">fa-camera</span><span class="szh_tile_code">f030</span></li>
+      <li class="szh_tile"><i class="fa-solid fa-book" aria-hidden="true"></i><span class="szh_tile_cjk">书卷</span><span class="szh_tile_name">fa-book</span><span class="szh_tile_code">f02d</span></li>
+      <li class="szh_tile"><i class="fa-solid fa-masks-theater" aria-hidden="true"></i><span class="szh_tile_cjk">戏面</span><span class="szh_tile_name">fa-masks-theater</span><span class="szh_tile_code">f630</span></li>
+      <li class="szh_tile"><i class="fa-solid fa-stamp" aria-hidden="true"></i><span class="szh_tile_cjk">印章</span><span class="szh_tile_name">fa-stamp</span><span class="szh_tile_code">f5bf</span></li>
+    </ul>
+  </section>
+
+  <section class="szh_group">
+    <h2 class="szh_group_label">品牌字标</h2>
+    <ul class="szh_shelf">
+      <li class="szh_tile"><i class="fa-brands fa-github" aria-hidden="true"></i><span class="szh_tile_cjk">GitHub</span><span class="szh_tile_name">fa-github</span><span class="szh_tile_code">f09b</span></li>
+      <li class="szh_tile"><i class="fa-brands fa-weibo" aria-hidden="true"></i><span class="szh_tile_cjk">微博</span><span class="szh_tile_name">fa-weibo</span><span class="szh_tile_code">f18a</span></li>
+      <li class="szh_tile"><i class="fa-brands fa-weixin" aria-hidden="true"></i><span class="szh_tile_cjk">微信</span><span class="szh_tile_name">fa-weixin</span><span class="szh_tile_code">f1d7</span></li>
+      <li class="szh_tile"><i class="fa-brands fa-qq" aria-hidden="true"></i><span class="szh_tile_cjk">QQ</span><span class="szh_tile_name">fa-qq</span><span class="szh_tile_code">f1d6</span></li>
+      <li class="szh_tile"><i class="fa-brands fa-html5" aria-hidden="true"></i><span class="szh_tile_cjk">HTML5</span><span class="szh_tile_name">fa-html5</span><span class="szh_tile_code">f13b</span></li>
+      <li class="szh_tile"><i class="fa-brands fa-css3-alt" aria-hidden="true"></i><span class="szh_tile_cjk">CSS3</span><span class="szh_tile_name">fa-css3-alt</span><span class="szh_tile_code">f38b</span></li>
+      <li class="szh_tile"><i class="fa-brands fa-bilibili" aria-hidden="true"></i><span class="szh_tile_cjk">哔哩哔哩</span><span class="szh_tile_name">fa-bilibili</span><span class="szh_tile_code">e3d9</span></li>
+      <li class="szh_tile"><i class="fa-brands fa-instagram" aria-hidden="true"></i><span class="szh_tile_cjk">Instagram</span><span class="szh_tile_name">fa-instagram</span><span class="szh_tile_code">f16d</span></li>
+      <li class="szh_tile"><i class="fa-brands fa-figma" aria-hidden="true"></i><span class="szh_tile_cjk">Figma</span><span class="szh_tile_name">fa-figma</span><span class="szh_tile_code">f799</span></li>
+      <li class="szh_tile"><i class="fa-brands fa-node-js" aria-hidden="true"></i><span class="szh_tile_cjk">Node.js</span><span class="szh_tile_name">fa-node-js</span><span class="szh_tile_code">f3d3</span></li>
+    </ul>
+  </section>
+
+  <section class="szh_method">
+    <h2 class="szh_method_title">字体如何成形</h2>
+    <p class="szh_method_intro">一枚字体图标，自字体文件到页上之形，经三步而成。</p>
+    <dl class="szh_steps">
+      <div class="szh_step">
+        <dt>其一 载体</dt>
+        <dd>图形铸入字体文件 fa-solid-900.woff2，由 CSS 的 @font-face 一并载入。本页字体即取自本地 cdn/fontawesome/webfonts 目录，不假外网。</dd>
+      </div>
+      <div class="szh_step">
+        <dt>其二 映射</dt>
+        <dd>每枚图标占用 Unicode 私用区的一个码位，如居所 house 占 f015，星芒 star 占 f005。字体在，码位便有了模样。</dd>
+      </div>
+      <div class="szh_step">
+        <dt>其三 呈现</dt>
+        <dd>写下 <code>&lt;i class="fa-solid fa-house"&gt;&lt;/i&gt;</code>，伪元素 ::before 以 content 取出码位，图形随字号与颜色而变。它首先是字，然后才是形。</dd>
+      </div>
+    </dl>
+    <div class="szh_code">
+      <pre>&lt;!-- 写下一枚图标 --&gt;
+&lt;i class="fa-solid fa-pen-nib"&gt;&lt;/i&gt;
+
+/* 其背后大意如此（摘自 all.min.css） */
+@font-face {
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  src: url("../webfonts/fa-solid-900.woff2") format("woff2");
+}
+.fa-solid::before { content: var(--fa); }</pre>
+    </div>
+  </section>
+</main>
+
+<footer class="szh_foot">
+  <p>拾形图谱，高级网页设计课程习作。字体图标之法见本页，矢量线性之法见 <a href="iconfont-2.html">线为形</a>。</p>
+  <a class="szh_foot_home" href="index.html">返回首页</a>
+</footer>
+
+</body>
+</html>
