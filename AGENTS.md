@@ -12,6 +12,8 @@
 - Before executing a user prompt, append to `szh_prompt.md`: timestamp, model, and prompt text. Never overwrite it.
 - Since 2026-10-23, project-defined CSS classes, IDs, and JS variables must start with `szh_`. Vendor classes (`fa-*`, `iconfont`, `icon-*`) are the only exception. Legacy student pages predate this rule and are unprefixed; do not mass-rename them.
 - Every new HTML page must be linked from `24002120423石子卉/index.html`. The index currently omits `event005.html`, `function_apply.html`, `JS_obj_fun005.html`, and all four root `iconfont-*.html` pages.
+- Every new HTML file must open with a header comment stating: author 石子卉, creation date, the AI model used, and the feature name, e.g. `<!-- 石子卉 2026-11-04 GLM-5.3-Flash 功能名称 -->`.
+- Every JS function must carry a comment immediately above it describing the main functionality it implements, e.g. `// 实现底部导航选中态切换`.
 - Keep dependencies local: vendor files go under `cdn/`; do not add remote CDN or webfont URLs. Legacy `24002120423石子卉/svg005.html` still loads `at.alicdn.com`; localize it if touched.
 - Root `css/flex.css` is an orphan one-line variant of `24002120423石子卉/css/flex.css`; `review_flex.html` uses the student copy, so edit that one.
 - `24002120423石子卉/font/` is byte-identical to `cdn/iconfont/`; root pages reference `cdn/iconfont/`, student pages reference `font/`.

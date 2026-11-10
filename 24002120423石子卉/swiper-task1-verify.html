@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<!-- 石子卉 2026-11-10 GLM-5.3-Flash Swiper任务一验证页 -->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>任务一验证页 · #wySw4 配置实测</title>
+<link rel="stylesheet" href="../cdn/swiper/swiper-bundle.min.css?v=11">
+<style>
+  body { margin: 0; background: #D9E0E8; font-family: "Microsoft YaHei", sans-serif; }
+  .szh_wrap { max-width: 640px; margin: 40px auto; background: #EDF1F5; padding: 22px; }
+  .szh_title { font-size: 16px; margin: 0 0 6px; }
+  .szh_note { font-size: 13px; color: #5A6B7C; margin: 0 0 16px; }
+  .szh_back { font-size: 13px; color: #2C5490; display: inline-block; margin-top: 14px; }
+  .szh_status { font-size: 12px; background: #2C5490; color: #fff; padding: 3px 10px; display: inline-block; margin-bottom: 12px; }
+  .swiper { width: 100%; aspect-ratio: 4 / 3; }
+  .swiper img { width: 100%; height: 100%; object-fit: cover; display: block; }
+</style>
+</head>
+<body>
+
+<div class="szh_wrap">
+  <span class="szh_status" id="szhStatus">初始化中…</span>
+  <p class="szh_title">任务一 · 第 2 轮 AI 回答配置实测（#wySw4）</p>
+  <p class="szh_note">验证项：① 无缝循环 ② 3.2 秒自动翻页且手动操作后不停 ③ 圆点分页器可点击 ④ 初始效果 cube。等待约 4 秒可见自动翻页；点击圆点后自动播放仍继续。</p>
+
+  <div class="swiper" id="wySw4">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide"><img src="swiper-imgs/tiangong_1.jpg" alt="天宫空间站"></div>
+      <div class="swiper-slide"><img src="swiper-imgs/fuxing_1.jpg" alt="复兴号动车组"></div>
+      <div class="swiper-slide"><img src="swiper-imgs/c919_1.jpg" alt="C919大飞机"></div>
+      <div class="swiper-slide"><img src="swiper-imgs/fendouzhe_1.jpg" alt="奋斗者号"></div>
+      <div class="swiper-slide"><img src="swiper-imgs/fast_1.jpg" alt="中国天眼"></div>
+    </div>
+    <div class="swiper-pagination" id="wyPag4"></div>
+  </div>
+
+  <a class="szh_back" href="index.html">返回首页</a>
+</div>
+
+<script src="../cdn/swiper/swiper-bundle.min.js?v=11"></script>
+<script>
+// 实现验证页状态提示：显示 Swiper 是否成功加载及实例运行状态
+window.addEventListener('load', function () {
+  var szhStatus = document.getElementById('szhStatus');
+  if (typeof Swiper === 'undefined') {
+    szhStatus.textContent = 'Swiper 库加载失败';
+    szhStatus.style.background = '#A63B25';
+    return;
+  }
+  // 实现第 2 轮 AI 回答配置的装载：四项需求全部写入 #wySw4 初始化参数
+  var szh_verify = new Swiper('#wySw4', {
+    loop: true,
+    speed: 800,
+    effect: 'cube',
+    autoplay: {
+      delay: 3200,
+      disableOnInteraction: false
+    },
+    pagination: {
+      el: '#wyPag4',
+      clickable: true
+    }
+  });
+  // 实现状态徽章更新：标注版本、效果与自动播放运行情况
+  szhStatus.textContent = 'Swiper 11 已加载 · effect=' + szh_verify.params.effect + ' · autoplay=' + (szh_verify.autoplay.running ? '运行中' : '未运行');
+});
+</script>
+
+</body>
+</html>

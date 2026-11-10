@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<!-- 石子卉 2026-11-04 GLM-5.3-Flash 新闻选项卡 -->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>新闻选项卡 · 拾形手帖</title>
+<style>
+  :root {
+    --szh_porcelain: #EDF1F5;
+    --szh_porcelain_deep: #E2E8EF;
+    --szh_ink: #1B2B3A;
+    --szh_ink_soft: #5A6B7C;
+    --szh_lapis: #2C5490;
+    --szh_gold_line: rgba(176, 141, 90, 0.45);
+    --szh_cinnabar: #A63B25;
+    --szh_serif: "Noto Serif SC", "Source Han Serif SC", "STZhongsong", "SimSun", serif;
+    --szh_sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: #D9E0E8;
+    color: var(--szh_ink);
+    font-family: var(--szh_sans);
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  a:focus-visible { outline: 2px solid var(--szh_cinnabar); outline-offset: 3px; }
+
+  .szh_app {
+    max-width: 640px;
+    margin: 32px auto;
+    background: var(--szh_porcelain);
+    box-shadow: 0 0 0 1px rgba(27, 43, 58, 0.16);
+    padding: 26px 26px 34px;
+  }
+
+  .szh_head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border-bottom: 1px solid var(--szh_gold_line);
+    padding-bottom: 14px;
+    margin-bottom: 20px;
+  }
+  .szh_brand_name { font-family: var(--szh_serif); font-weight: 700; letter-spacing: 0.12em; }
+  .szh_home { font-size: 13px; color: var(--szh_lapis); text-decoration: none; border-bottom: 1px solid var(--szh_gold_line); }
+
+  .szh_lede { margin: 0 0 22px; font-family: var(--szh_serif); font-size: 15.5px; }
+
+  /* ---- 选项卡 ---- */
+  .szh_tabbar {
+    display: flex;
+    border-bottom: 2px solid var(--szh_gold_line);
+    margin: 0 0 18px;
+    padding: 0;
+    list-style: none;
+  }
+  .szh_tab_item {
+    padding: 10px 18px;
+    margin-bottom: -2px;
+    cursor: pointer;
+    color: var(--szh_ink_soft);
+    border-bottom: 2px solid transparent;
+    letter-spacing: 0.08em;
+    user-select: none;
+    transition: color 0.2s ease;
+  }
+  .szh_tab_item:hover { color: var(--szh_lapis); }
+  .szh_tab_item.szh_active {
+    color: var(--szh_lapis);
+    border-bottom-color: var(--szh_cinnabar);
+    font-weight: 700;
+  }
+
+  /* ---- 内容面板 ---- */
+  .szh_panel { display: none; margin: 0; padding: 0; list-style: none; }
+  .szh_panel.szh_show { display: block; }
+  .szh_panel li {
+    padding: 11px 2px;
+    border-top: 1px solid var(--szh_gold_line);
+  }
+  .szh_panel li:last-child { border-bottom: 1px solid var(--szh_gold_line); }
+  .szh_panel time {
+    display: block;
+    font-size: 12px;
+    color: var(--szh_ink_soft);
+  }
+
+  .szh_footnote { margin: 22px 0 0; font-size: 13px; color: var(--szh_ink_soft); }
+</style>
+</head>
+<body>
+
+<div class="szh_app">
+
+  <header class="szh_head">
+    <span class="szh_brand_name">拾形手帖 · 新闻选项卡</span>
+    <a class="szh_home" href="index.html">返回首页</a>
+  </header>
+
+  <p class="szh_lede">一纸三栏：国内、省内、国际。国际一栏为默认展开；JS 外引于 js 文件夹，组件可复用。</p>
+
+  <!-- 选项卡组：容器带 data-szh-tabs 属性即可被 szh_tab.js 复用初始化 -->
+  <div data-szh-tabs>
+    <ul class="szh_tabbar" role="tablist" aria-label="新闻分类">
+      <li class="szh_tab_item" id="szh_tab_gn" role="tab" aria-selected="false" data-szh-panel="szh_panel_gn" tabindex="0">国内新闻</li>
+      <li class="szh_tab_item" id="szh_tab_sn" role="tab" aria-selected="false" data-szh-panel="szh_panel_sn" tabindex="0">省内新闻</li>
+      <li class="szh_tab_item szh_active" id="szh_tab_gj" role="tab" aria-selected="true" data-szh-panel="szh_panel_gj" tabindex="0">国际新闻</li>
+    </ul>
+
+    <ul class="szh_panel" id="szh_panel_gn" role="tabpanel" aria-labelledby="szh_tab_gn">
+      <li>全国铁路今起实行新列车运行图，京沪间增开夜间高铁。<time>2026-11-04 · 新华社</time></li>
+      <li>第七届中国国际进口博览会在上海开幕，参展商数量创新高。<time>2026-11-03 · 人民日报</time></li>
+      <li>南水北调中线年度调水任务提前完成，惠及沿线二十余城。<time>2026-11-02 · 央视新闻</time></li>
+    </ul>
+
+    <ul class="szh_panel" id="szh_panel_sn" role="tabpanel" aria-labelledby="szh_tab_sn">
+      <li>辽宁省秋季文旅消费季启动，沈阳故宫推出夜游专场。<time>2026-11-04 · 辽宁日报</time></li>
+      <li>大连港新增东南亚集装箱航线，外贸班轮密度进一步提升。<time>2026-11-03 · 辽沈晚报</time></li>
+      <li>沈阳浑南科技城首批实验室入驻，聚焦智能制造与新材料。<time>2026-11-01 · 沈阳发布</time></li>
+    </ul>
+
+    <ul class="szh_panel szh_show" id="szh_panel_gj" role="tabpanel" aria-labelledby="szh_tab_gj">
+      <li>联合国气候变化大会开幕，各国磋商新的减排资金机制。<time>2026-11-04 · 路透社</time></li>
+      <li>国际空间站完成新一轮宇航员轮换，乘组开展材料实验。<time>2026-11-03 · 美联社</time></li>
+      <li>全球数字经济峰会在日内瓦举行，探讨人工智能跨境治理。<time>2026-11-02 · 法新社</time></li>
+    </ul>
+  </div>
+
+  <p class="szh_footnote">实现说明：js/szh_tab.js 外部引用；选项卡组件可复用（容器加 data-szh-tabs 即可），监听事件采用事件委托，点击时先清除所有选中状态，再设置当前元素选中状态。</p>
+
+</div>
+
+<script src="js/szh_tab.js"></script>
+
+</body>
+</html>
