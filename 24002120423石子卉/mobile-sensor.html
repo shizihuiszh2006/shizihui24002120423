@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- 石子卉24002120423 2026-11-18 GLM-5.3-Flash 摇一摇抽菜谱：devicemotion 合成加速度判摇 + 1.5s 冷却 + 降级按钮 -->
+<!-- 石子卉24002120423 2026-11-18 GLM-5.3-Flash 摇一摇抽菜谱：devicemotion 合成加速度判摇 + 1.5s 冷却 + 降级按钮 + 倾斜视差 -->
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -55,19 +55,21 @@
   }
   .szh_why b{color:#ffd479;display:block;margin-bottom:8px}
   .szh_back{display:block;margin-top:18px;font-size:13px;color:#ffd479;text-decoration:none}
+  /* 实现倾斜视差：带 data-szh-depth 的元素随手机左右倾斜产生不同深度的水平位移 */
+  [data-szh-depth]{transition:transform .15s ease-out;will-change:transform}
 </style>
 </head>
 <body>
 <div class="szh_page">
-  <div class="szh_head">
+  <div class="szh_head" data-szh-depth="0.6">
     <h1>今日吃什么？</h1>
     <p>devicemotion · accelerationIncludingGravity · 阈值 18 · 冷却 1.5s</p>
   </div>
 
-  <div class="szh_shake_icon">🍗</div>
-  <div class="szh_lead">摇一摇手机，抽今日菜谱</div>
+  <div class="szh_shake_icon" data-szh-depth="1.4">🍗</div>
+  <div class="szh_lead" data-szh-depth="0.9">摇一摇手机，抽今日菜谱</div>
 
-  <div class="szh_result" id="szhResult">
+  <div class="szh_result" id="szhResult" data-szh-depth="0.5">
     <div class="szh_label">今日菜谱</div>
     <h2 id="szhDishName">等待摇动…</h2>
     <p id="szhDishDesc">拿起手机摇一摇，帮你决定这一餐</p>
@@ -75,12 +77,12 @@
 
   <div class="szh_cool_tip" id="szhCoolTip"></div>
 
-  <div class="szh_fallback" id="szhFallback">
+  <div class="szh_fallback" id="szhFallback" data-szh-depth="0.7">
     <div class="szh_warn">当前设备不支持，请用手机打开</div>
     <button class="szh_btn" id="szhBtn" type="button">点我抽一次</button>
   </div>
 
-  <div class="szh_why">
+  <div class="szh_why" data-szh-depth="0.35">
     <b>为什么必须做降级？</b>
     devicemotion 依赖设备内置加速度传感器：电脑、大部分台式机和模拟器根本没有硬件，事件永远不会触发或数据为 null；
     即使有硬件，iOS 13+ 还要求用户主动授权（DeviceMotionEvent.requestPermission），且许多浏览器只在 HTTPS 或 localhost
@@ -177,6 +179,33 @@ setTimeout(function () {
 // 实现降级按钮：点击等价于摇一次（走同样的冷却逻辑）
 document.getElementById("szhBtn").addEventListener("click", function () {
   szhTryDraw(Date.now());
+});
+
+// 实现倾斜视差：监听 deviceorientation，手机左右倾斜角 gamma 映射为各层元素的水平位移
+var szhTiltMax = 30;  // 最大有效倾斜角，超出按边界处理
+
+// 实现iOS 13+ 下 DeviceOrientation 同样需要授权，与 devicemotion 一并申请
+window.addEventListener("touchend", function szhAskOrientPermission() {
+  if (typeof DeviceOrientationEvent !== "undefined" &&
+      typeof DeviceOrientationEvent.requestPermission === "function") {
+    DeviceOrientationEvent.requestPermission().catch(function () {});
+  }
+  window.removeEventListener("touchend", szhAskOrientPermission);
+});
+
+window.addEventListener("deviceorientation", function (szhEvent) {
+  // 实现gamma 为手机左右倾斜角（-90~90），无数据时不动
+  var szhGamma = szhEvent.gamma;
+  if (szhGamma === null || szhGamma === undefined) { return; }
+  // 实现限制有效倾斜范围，避免过大位移
+  var szhG = Math.max(-szhTiltMax, Math.min(szhTiltMax, szhGamma));
+  // 实现按层深系数位移：depth 越大位移越大，形成前后景视差
+  var szhLayers = document.querySelectorAll("[data-szh-depth]");
+  for (var i = 0; i < szhLayers.length; i++) {
+    var szhDepth = parseFloat(szhLayers[i].getAttribute("data-szh-depth"));
+    var szhShift = szhG * szhDepth;
+    szhLayers[i].style.transform = "translateX(" + szhShift.toFixed(1) + "px)";
+  }
 });
 </script>
 </body>
