@@ -47,10 +47,6 @@
   .szh_btn:active{transform:scale(.95)}
   /* 实现冷却期间提示文字样式 */
   .szh_cool_tip{font-size:12px;color:#6d7688;margin-top:16px;height:18px}
-  /* 实现实机演示视频样式 */
-  .szh_demo{margin-top:30px}
-  .szh_demo h3{font-size:15px;color:#ffd479;margin-bottom:10px;text-align:left}
-  .szh_demo video{width:100%;border-radius:14px;box-shadow:0 10px 26px rgba(0,0,0,.4);display:block}
   /* 实现降级说明块 */
   .szh_why{
     text-align:left;background:rgba(255,255,255,.06);
@@ -58,6 +54,9 @@
     padding:16px 18px;margin-top:30px;font-size:13px;color:#b7c0d4;
   }
   .szh_why b{color:#ffd479;display:block;margin-bottom:8px}
+  /* 实现演示视频区：圆角卡片与其他页面风格统一 */
+  .szh_video_title{text-align:center;font-size:14px;color:#ffd479;margin:24px 0 10px}
+  .szh_video{width:100%;display:block;border-radius:16px;box-shadow:0 14px 34px rgba(0,0,0,.4);background:#0d0f15}
   .szh_back{display:block;margin-top:18px;font-size:13px;color:#ffd479;text-decoration:none}
   /* 实现倾斜视差：带 data-szh-depth 的元素随手机左右倾斜产生不同深度的水平位移 */
   [data-szh-depth]{transition:transform .15s ease-out;will-change:transform}
@@ -86,11 +85,6 @@
     <button class="szh_btn" id="szhBtn" type="button">点我抽一次</button>
   </div>
 
-  <div class="szh_demo">
-    <h3>实机效果演示</h3>
-    <video src="video/szh_sensor_demo.mp4" controls preload="metadata" playsinline></video>
-  </div>
-
   <div class="szh_why" data-szh-depth="0.35">
     <b>为什么必须做降级？</b>
     devicemotion 依赖设备内置加速度传感器：电脑、大部分台式机和模拟器根本没有硬件，事件永远不会触发或数据为 null；
@@ -98,6 +92,9 @@
     下才开放该接口。只要其中任何一环不满足，"摇一摇"就是死功能——所以必须检测"事件不来或没有数据"，自动给出"点我抽一次"
     的降级按钮，保证任何设备上核心功能（随机抽菜谱）都可用。
   </div>
+
+  <h3 class="szh_video_title">操作演示视频</h3>
+  <video class="szh_video" src="img/szh_sensor_demo.mp4" controls playsinline preload="metadata"></video>
 
   <a class="szh_back" href="index.html">← 返回课堂实践中心</a>
 </div>
