@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<!-- 石子卉24002120423 2026-11-18 GLM-5.3-Flash 移动端手势滑动美食卡片：touchstart/touchend 计算横向位移切换菜品 -->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>移动端手势 · 美食卡片滑动</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:#1f2430;color:#fff;line-height:1.7;overflow-x:hidden}
+  .szh_page{max-width:480px;margin:0 auto;padding:28px 18px 40px;min-height:100%}
+  .szh_head{text-align:center;margin-bottom:22px}
+  .szh_head h1{font-size:22px;color:#ffd479}
+  .szh_head p{font-size:12px;color:#9aa3b5;margin-top:6px}
+  /* 实现卡片容器：pan-y 保证纵向滚动，横向手势由本页接管 */
+  .szh_stage{perspective:900px}
+  .szh_card{
+    touch-action:pan-y;
+    border-radius:20px;
+    padding:44px 26px 38px;
+    min-height:340px;
+    display:flex;flex-direction:column;justify-content:flex-end;
+    box-shadow:0 14px 34px rgba(0,0,0,.4);
+    transition:transform .3s ease, opacity .3s ease;
+    user-select:none;-webkit-user-select:none;
+    cursor:grab;
+  }
+  .szh_card.szh_leaving{opacity:.15;transform:scale(.92)}
+  .szh_badge{align-self:flex-start;font-size:11px;letter-spacing:2px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.25);backdrop-filter:blur(4px);margin-bottom:auto}
+  .szh_name{font-size:30px;font-weight:bold;margin:18px 0 10px;text-shadow:0 2px 8px rgba(0,0,0,.35)}
+  .szh_intro{font-size:14px;color:rgba(255,255,255,.92)}
+  /* 实现指示与提示文字 */
+  .szh_indicator{display:flex;justify-content:center;gap:8px;margin:20px 0 8px}
+  .szh_dot{width:8px;height:8px;border-radius:50%;background:#4a5266;transition:background .3s,width .3s}
+  .szh_dot.szh_on{background:#ffd479;width:22px;border-radius:6px}
+  .szh_counter{text-align:center;font-size:14px;color:#9aa3b5;letter-spacing:1px}
+  .szh_hint{text-align:center;font-size:13px;color:#ff8f8f;height:22px;margin-top:10px;opacity:0;transition:opacity .25s}
+  .szh_hint.szh_show{opacity:1}
+  .szh_tip{text-align:center;font-size:12px;color:#6d7688;margin-top:18px}
+  .szh_back{display:block;text-align:center;margin-top:16px;font-size:13px;color:#ffd479;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="szh_page">
+  <div class="szh_head">
+    <h1>滑动切换菜品</h1>
+    <p>touchstart / touchend 手势 · 阈值 40px · 300ms 冷却</p>
+  </div>
+
+  <div class="szh_stage" id="szhStage">
+    <div class="szh_card" id="szhCard">
+      <span class="szh_badge" id="szhBadge"></span>
+      <h2 class="szh_name" id="szhName"></h2>
+      <p class="szh_intro" id="szhIntro"></p>
+    </div>
+  </div>
+
+  <div class="szh_indicator" id="szhIndicator"></div>
+  <div class="szh_counter" id="szhCounter">第 1/4 张</div>
+  <div class="szh_hint" id="szhHint"></div>
+  <div class="szh_tip">← 左滑下一张 · 右滑上一张 →</div>
+  <a class="szh_back" href="index.html">← 返回课堂实践中心</a>
+</div>
+
+<script>
+// 实现定义 4 道菜的数据与各自的渐变背景
+var szhDishes = [
+  { szhTitle: "麻婆豆腐", szhDesc: "川菜经典，豆腐嫩滑，牛肉酥香，麻辣鲜香烫口，一勺红油勾魂。", szhGrad: "linear-gradient(135deg,#ff4d4d,#c31432)" },
+  { szhTitle: "东坡肉", szhDesc: "江南名馔，五花三層，黄酒慢炖四小时，入口即化肥而不腻。", szhGrad: "linear-gradient(135deg,#f7971e,#b44b0f)" },
+  { szhTitle: "松鼠桂鱼", szhDesc: "苏帮名菜，刀工开花，炸至金黄，浇上糖醋汁吱吱作响，外脆里嫩。", szhGrad: "linear-gradient(135deg,#43cea2,#185a9d)" },
+  { szhTitle: "佛跳墙", szhDesc: "闽菜之首，鲍参翅肚聚于一坛，文火煨足三日，开坛香醉隔壁。", szhGrad: "linear-gradient(135deg,#7b4397,#2e1437)" }
+];
+
+var szhIndex = 0;        // 当前菜品下标
+var szhCooling = false;  // 300ms 冷却标记，防止连滑跳两张
+var szhStartX = 0;       // touchstart 起点横坐标
+
+// 实现渲染当前卡片内容、计数、圆点指示
+function szhRender() {
+  var szhDish = szhDishes[szhIndex];
+  document.getElementById("szhBadge").textContent = "招牌 · 0" + (szhIndex + 1);
+  document.getElementById("szhName").textContent = szhDish.szhTitle;
+  document.getElementById("szhIntro").textContent = szhDish.szhDesc;
+  document.getElementById("szhCard").style.background = szhDish.szhGrad;
+  document.getElementById("szhCounter").textContent = "第 " + (szhIndex + 1) + "/" + szhDishes.length + " 张";
+  var szhDots = document.querySelectorAll("#szhIndicator .szh_dot");
+  for (var i = 0; i < szhDots.length; i++) {
+    szhDots[i].className = i === szhIndex ? "szh_dot szh_on" : "szh_dot";
+  }
+}
+
+// 实现生成 4 个指示圆点
+function szhBuildDots() {
+  var szhBox = document.getElementById("szhIndicator");
+  var szhHtml = "";
+  for (var i = 0; i < szhDishes.length; i++) {
+    szhHtml += '<span class="szh_dot"></span>';
+  }
+  szhBox.innerHTML = szhHtml;
+}
+
+// 实现边界提示文字，显示 1.2 秒后淡出
+function szhShowHint(szhText) {
+  var szhEl = document.getElementById("szhHint");
+  szhEl.textContent = szhText;
+  szhEl.classList.add("szh_show");
+  setTimeout(function () { szhEl.classList.remove("szh_show"); }, 1200);
+}
+
+// 实现带 0.3s 过渡动画与 300ms 冷却的切换
+function szhSwitch(szhStep) {
+  var szhNext = szhIndex + szhStep;
+  if (szhNext < 0) { szhShowHint("已经是第一张"); return; }
+  if (szhNext >= szhDishes.length) { szhShowHint("已经是最后一张"); return; }
+  if (szhCooling) { return; }
+  szhCooling = true;
+
+  var szhCard = document.getElementById("szhCard");
+  szhCard.classList.add("szh_leaving");
+  setTimeout(function () {
+    szhIndex = szhNext;
+    szhRender();
+    szhCard.classList.remove("szh_leaving");
+    setTimeout(function () { szhCooling = false; }, 300);
+  }, 300);
+}
+
+// 实现 touchstart 记录起点横坐标（changedTouches[0]）
+document.getElementById("szhCard").addEventListener("touchstart", function (szhEvent) {
+  szhStartX = szhEvent.changedTouches[0].clientX;
+});
+
+// 实现 touchend 计算横向位移，超过 40px 阈值判定滑动方向
+document.getElementById("szhCard").addEventListener("touchend", function (szhEvent) {
+  var szhDeltaX = szhEvent.changedTouches[0].clientX - szhStartX;
+  if (Math.abs(szhDeltaX) < 40) { return; }
+  szhSwitch(szhDeltaX < 0 ? 1 : -1);
+});
+
+szhBuildDots();
+szhRender();
+</script>
+</body>
+</html>

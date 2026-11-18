@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!-- 石子卉 2026-11-13 GLM-5.3-Flash 上图下文诗歌卡片列表：通过本地服务器获取 db/db.json 的 poems 数据渲染 -->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>上图下文 · 诗歌卡片列表</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#f6f8fc;font-family:"Microsoft YaHei","PingFang SC",sans-serif;color:#1f2937;line-height:1.7}
+  .szh_page{max-width:1000px;margin:0 auto;padding:36px 20px 56px}
+  .szh_head{text-align:center;margin-bottom:26px}
+  .szh_head h1{font-size:24px;color:#1d4ed8;margin-bottom:8px}
+  .szh_head p{font-size:13px;color:#6b7280}
+  .szh_list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+  /* 实现上图下文卡片结构 */
+  .szh_card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;overflow:hidden;box-shadow:0 6px 18px rgba(29,78,216,.07);transition:transform .25s}
+  .szh_card:hover{transform:translateY(-4px)}
+  .szh_card img{display:block;width:100%;height:190px;object-fit:cover}
+  .szh_body{padding:14px 16px 18px}
+  .szh_body h2{font-size:17px;color:#1d4ed8;margin-bottom:8px}
+  .szh_body p{font-size:14px;color:#374151}
+  .szh_empty{text-align:center;color:#6b7280;font-size:14px;padding:40px 0}
+  .szh_back{display:inline-block;margin-top:24px;font-size:13px;color:#1d4ed8;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="szh_page">
+  <div class="szh_head">
+    <h1>诗歌卡片 · 上图下文</h1>
+    <p>数据来源：本地服务器 db/db.json 的 poems 数组（端口 3003）</p>
+  </div>
+  <div class="szh_list" id="szhList">
+    <div class="szh_empty">正在加载诗歌数据……</div>
+  </div>
+  <a class="szh_back" href="index.html">← 返回课堂实践中心</a>
+</div>
+<script>
+// 实现定义数据接口地址：与 db/server.js 中启动的端口 3003 保持一致
+var szhApiUrl = "http://localhost:3003/api/poems";
+
+// 实现请求本地服务器接口并渲染上图下文卡片列表
+function szhLoadPoems() {
+  fetch(szhApiUrl)
+    .then(function (szhRes) { return szhRes.json(); })
+    .then(function (szhData) { szhRenderPoems(szhData.poems || []); })
+    .catch(function () {
+      document.getElementById("szhList").innerHTML =
+        '<div class="szh_empty">加载失败：请先在 db 文件夹启动数据服务器（node server.js，端口 3003），再刷新页面</div>';
+    });
+}
+
+// 实现把 poems 数组渲染为上图下文的卡片
+function szhRenderPoems(szhPoems) {
+  var szhList = document.getElementById("szhList");
+  if (!szhPoems.length) {
+    szhList.innerHTML = '<div class="szh_empty">db.json 中暂无 poems 数据</div>';
+    return;
+  }
+  var szhHtml = szhPoems.map(function (szhItem) {
+    return '<div class="szh_card">' +
+      '<img src="' + szhItem.pic + '" alt="' + szhItem.title + '" referrerpolicy="no-referrer">' +
+      '<div class="szh_body">' +
+      '<h2>' + szhItem.title + '</h2>' +
+      '<p>' + szhItem.content + '</p>' +
+      '</div></div>';
+  }).join("");
+  szhList.innerHTML = szhHtml;
+}
+
+szhLoadPoems();
+</script>
+</body>
+</html>

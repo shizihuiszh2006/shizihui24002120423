@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<!-- 石子卉24002120423 2026-11-18 GLM-5.3-Flash 移动端图片查看器：双指缩放(1~4倍)、单指拖动、边界回弹、双击切换 1x/2x -->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>移动端手势 · 图片缩放查看器</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:#1f2430;color:#fff;line-height:1.7}
+  .szh_page{max-width:480px;margin:0 auto;padding:24px 16px 40px}
+  .szh_head{text-align:center;margin-bottom:16px}
+  .szh_head h1{font-size:22px;color:#ffd479}
+  .szh_head p{font-size:12px;color:#9aa3b5;margin-top:6px}
+  /* 实现打开提示条：桌面端预览时提醒手势需真机操作 */
+  .szh_notice{background:rgba(255,212,121,.14);border:1px solid rgba(255,212,121,.4);color:#ffd479;font-size:13px;text-align:center;border-radius:10px;padding:10px 14px;margin-bottom:14px}
+  /* 实现查看器容器：裁掉溢出部分，接管全部触摸行为 */
+  .szh_viewer{
+    position:relative;
+    overflow:hidden;
+    touch-action:none;
+    user-select:none;
+    -webkit-user-select:none;
+    height:380px;
+    border-radius:16px;
+    background:#0d0f15;
+    box-shadow:0 14px 34px rgba(0,0,0,.4);
+  }
+  .szh_viewer img{
+    position:absolute;left:0;top:0;
+    width:100%;height:auto;display:block;
+    transform-origin:0 0;
+    will-change:transform;
+    pointer-events:none;
+  }
+  .szh_viewer.szh_anim img{transition:transform .25s ease}
+  /* 实现缩放倍数显示 */
+  .szh_scale{position:absolute;right:12px;top:12px;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);font-size:12px;padding:4px 12px;border-radius:999px;letter-spacing:1px}
+  .szh_tip{text-align:center;font-size:12px;color:#6d7688;margin-top:16px}
+  .szh_back{display:block;text-align:center;margin-top:14px;font-size:13px;color:#ffd479;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="szh_page">
+  <div class="szh_head">
+    <h1>图片缩放查看器</h1>
+    <p>双指捏合缩放 1~4 倍 · 单指拖动 · 双击 1x/2x</p>
+  </div>
+
+  <div class="szh_notice" id="szhNotice">双指缩放请用手机打开</div>
+
+  <div class="szh_viewer" id="szhViewer">
+    <img id="szhImg" src="img/szh_zoom_food.jpg" alt="中华美食全席">
+    <span class="szh_scale" id="szhScaleText">1.0x</span>
+  </div>
+
+  <div class="szh_tip">容器 overflow:hidden + touch-action:none，手势完全由 JS 接管</div>
+  <a class="szh_back" href="index.html">← 返回课堂实践中心</a>
+</div>
+
+<script>
+// 实现获取容器与图片元素引用
+var szhViewer = document.getElementById("szhViewer");
+var szhImg = document.getElementById("szhImg");
+var szhScaleText = document.getElementById("szhScaleText");
+
+// 实现定义缩放与位移状态：transform 为 translate(tx,ty) scale(s)，原点在容器左上角
+var szhScale = 1;
+var szhTx = 0;
+var szhTy = 0;
+var szhScaleMax = 4;
+
+// 实现记录手势中间状态
+var szhPinching = false;     // 是否双指缩放中
+var szhStartDist = 0;        // 两指初始距离
+var szhStartScale = 1;       // 双指按下时的倍数
+var szhDragging = false;     // 是否单指拖动中
+var szhStartX = 0;           // 单指起点横坐标
+var szhStartY = 0;           // 单指起点纵坐标
+var szhBaseTx = 0;           // 拖动/缩放开始时的位移
+var szhBaseTy = 0;
+
+// 实现计算两个触点之间的直线距离
+function szhGetDist(szhTouches) {
+  var szhDx = szhTouches[0].clientX - szhTouches[1].clientX;
+  var szhDy = szhTouches[0].clientY - szhTouches[1].clientY;
+  return Math.sqrt(szhDx * szhDx + szhDy * szhDy);
+}
+
+// 实现计算两个触点的中点（缩放基准点）
+function szhGetMid(szhTouches) {
+  return {
+    szhX: (szhTouches[0].clientX + szhTouches[1].clientX) / 2,
+    szhY: (szhTouches[0].clientY + szhTouches[1].clientY) / 2
+  };
+}
+
+// 实现把位移限制在边界内：图片放大后不允许拖出容器，缩到比容器小时居中
+function szhClamp() {
+  var szhRect = szhViewer.getBoundingClientRect();
+  var szhW = szhRect.width;
+  var szhH = szhRect.height;
+  // 实现取图片当前显示尺寸（scale 作用后的宽高）
+  var szhImgW = szhImg.offsetWidth * szhScale;
+  var szhImgH = szhImg.offsetHeight * szhScale;
+  // 实现横向边界
+  if (szhImgW <= szhW) {
+    szhTx = (szhW - szhImgW) / 2;
+  } else {
+    szhTx = Math.min(0, Math.max(szhW - szhImgW, szhTx));
+  }
+  // 实现纵向边界
+  if (szhImgH <= szhH) {
+    szhTy = (szhH - szhImgH) / 2;
+  } else {
+    szhTy = Math.min(0, Math.max(szhH - szhImgH, szhTy));
+  }
+}
+
+// 实应用当前状态到 transform 并更新倍数显示
+function szhApply() {
+  szhImg.style.transform = "translate(" + szhTx + "px," + szhTy + "px) scale(" + szhScale + ")";
+  szhScaleText.textContent = szhScale.toFixed(1) + "x";
+}
+
+// 实现 touchstart：记录单指/双指状态与两指初始距离
+szhViewer.addEventListener("touchstart", function (szhEvent) {
+  if (szhEvent.touches.length === 2) {
+    // 实现双指按下：记录初始距离与当前倍数，进入缩放状态
+    szhPinching = true;
+    szhDragging = false;
+    szhStartDist = szhGetDist(szhEvent.touches);
+    szhStartScale = szhScale;
+    szhBaseTx = szhTx;
+    szhBaseTy = szhTy;
+    szhViewer.classList.remove("szh_anim");
+  } else if (szhEvent.touches.length === 1) {
+    // 实现单指按下：记录起点，可能进入拖动状态
+    szhPinching = false;
+    szhDragging = szhScale > 1;
+    szhStartX = szhEvent.touches[0].clientX;
+    szhStartY = szhEvent.touches[0].clientY;
+    szhBaseTx = szhTx;
+    szhBaseTy = szhTy;
+    szhViewer.classList.remove("szh_anim");
+  }
+});
+
+// 实现 touchmove：双指按距离比例缩放（以两指中点为基准），单指拖动
+szhViewer.addEventListener("touchmove", function (szhEvent) {
+  szhEvent.preventDefault();
+  if (szhEvent.touches.length === 2 && szhPinching) {
+    // 实现按初始距离与当前距离的比值计算新倍数，限制在 1~4 倍
+    var szhRatio = szhGetDist(szhEvent.touches) / szhStartDist;
+    var szhNewScale = Math.min(szhScaleMax, Math.max(1, szhStartScale * szhRatio));
+    var szhMid = szhGetMid(szhEvent.touches);
+    var szhRect = szhViewer.getBoundingClientRect();
+    // 实现把中点换算为容器内坐标，保证中点指的位置在缩放前后不动
+    var szhMx = szhMid.szhX - szhRect.left;
+    var szhMy = szhMid.szhY - szhRect.top;
+    var szhK = szhNewScale / szhStartScale;
+    szhTx = szhMx - (szhMx - szhBaseTx) * szhK;
+    szhTy = szhMy - (szhMy - szhBaseTy) * szhK;
+    szhScale = szhNewScale;
+    szhApply();
+  } else if (szhEvent.touches.length === 1 && szhDragging && szhScale > 1) {
+    // 实现单指拖动：位移 = 基础位移 + 手指增量
+    szhTx = szhBaseTx + (szhEvent.touches[0].clientX - szhStartX);
+    szhTy = szhBaseTy + (szhEvent.touches[0].clientY - szhStartY);
+    szhApply();
+  }
+}, { passive: false });
+
+// 实现 touchend：松手后把图片限制在边界内，并按剩余手指数复位状态
+szhViewer.addEventListener("touchend", function (szhEvent) {
+  if (szhEvent.touches.length === 0) {
+    // 实现全部手指离开：松手回弹到边界内，结束所有手势
+    szhPinching = false;
+    szhDragging = false;
+    szhClamp();
+    szhApply();
+  } else if (szhEvent.touches.length === 1 && szhPinching) {
+    // 实现双指抬起一指：退化为单指拖动，以剩余手指为新起点
+    szhPinching = false;
+    szhDragging = szhScale > 1;
+    szhStartX = szhEvent.touches[0].clientX;
+    szhStartY = szhEvent.touches[0].clientY;
+    szhBaseTx = szhTx;
+    szhBaseTy = szhTy;
+  }
+});
+
+// 实现双击在 1x 与 2x 之间切换，带 0.25s 过渡（以容器中心为基准）
+szhViewer.addEventListener("dblclick", function (szhEvent) {
+  var szhRect = szhViewer.getBoundingClientRect();
+  var szhTarget = szhScale > 1 ? 1 : 2;
+  var szhCx = szhEvent.clientX ? szhEvent.clientX - szhRect.left : szhRect.width / 2;
+  var szhCy = szhEvent.clientY ? szhEvent.clientY - szhRect.top : szhRect.height / 2;
+  var szhK = szhTarget / szhScale;
+  szhTx = szhCx - (szhCx - szhTx) * szhK;
+  szhTy = szhCy - (szhCy - szhTy) * szhK;
+  szhScale = szhTarget;
+  szhViewer.classList.add("szh_anim");
+  szhClamp();
+  szhApply();
+});
+
+szhApply();
+</script>
+</body>
+</html>
