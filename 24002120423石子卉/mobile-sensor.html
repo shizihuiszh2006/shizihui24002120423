@@ -47,6 +47,10 @@
   .szh_btn:active{transform:scale(.95)}
   /* 实现冷却期间提示文字样式 */
   .szh_cool_tip{font-size:12px;color:#6d7688;margin-top:16px;height:18px}
+  /* 实现实机演示视频样式 */
+  .szh_demo{margin-top:30px}
+  .szh_demo h3{font-size:15px;color:#ffd479;margin-bottom:10px;text-align:left}
+  .szh_demo video{width:100%;border-radius:14px;box-shadow:0 10px 26px rgba(0,0,0,.4);display:block}
   /* 实现降级说明块 */
   .szh_why{
     text-align:left;background:rgba(255,255,255,.06);
@@ -80,6 +84,11 @@
   <div class="szh_fallback" id="szhFallback" data-szh-depth="0.7">
     <div class="szh_warn">当前设备不支持，请用手机打开</div>
     <button class="szh_btn" id="szhBtn" type="button">点我抽一次</button>
+  </div>
+
+  <div class="szh_demo">
+    <h3>实机效果演示</h3>
+    <video src="video/szh_sensor_demo.mp4" controls preload="metadata" playsinline></video>
   </div>
 
   <div class="szh_why" data-szh-depth="0.35">
